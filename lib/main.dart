@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_course_meal_app/widgets/filters_screen.dart';
+import 'package:flutter_course_meal_app/widgets/tabs_screen.dart';
 
 import './widgets/categories_screen.dart';
 import './widgets/category_meals_screen.dart';
@@ -35,10 +37,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'DeliMeals',
       theme: theme.copyWith(colorScheme: theme.colorScheme.copyWith(secondary: Colors.amber)),
-      home: const CategoriesScreen(),
+      // home: const CategoriesScreen(),
+      home: const TabsScreen(),
       routes: {
+        // '/': (context) => const TabsScreen(),
         CategoryMealsScreen.routeName: (context) => const CategoryMealsScreen(),
-        MealDetailScreen.routeName: (context) => const MealDetailScreen()
+        MealDetailScreen.routeName: (context) => const MealDetailScreen(),
+        FiltersScreen.routeName: (context) => const FiltersScreen(),
       },
     );
   }
