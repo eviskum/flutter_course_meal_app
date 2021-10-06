@@ -5,7 +5,9 @@ import 'package:flutter_course_meal_app/models/meal.dart';
 class MealDetailScreen extends StatelessWidget {
   static const String routeName = '/meal-detail-screen';
 
-  const MealDetailScreen({Key? key}) : super(key: key);
+  final List<Meal> selectedMeals;
+
+  MealDetailScreen(this.selectedMeals, {Key? key}) : super(key: key);
 
   Container sectionTitle(BuildContext context, String title) {
     return Container(
@@ -35,7 +37,7 @@ class MealDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String id = ModalRoute.of(context)!.settings.arguments as String;
-    final selectedMeal = DUMMY_MEALS.firstWhere((meal) => meal.id == id);
+    final selectedMeal = selectedMeals.firstWhere((meal) => meal.id == id);
     return Scaffold(
       appBar: AppBar(
         title: Text(selectedMeal.title),
@@ -72,7 +74,7 @@ class MealDetailScreen extends StatelessWidget {
                       ),
                       title: Text(selectedMeal.steps[idx]),
                     ),
-                    Divider(),
+                    const Divider(),
                   ],
                 ),
                 itemCount: selectedMeal.ingredients.length,
@@ -80,6 +82,12 @@ class MealDetailScreen extends StatelessWidget {
             ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.delete),
+        onPressed: () {
+          Navigator.of(context).pop(id);
+        },
       ),
     );
   }

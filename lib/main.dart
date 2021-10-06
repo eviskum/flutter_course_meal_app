@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_course_meal_app/models/dummy_data.dart';
+import 'package:flutter_course_meal_app/models/filter.dart';
+import 'package:flutter_course_meal_app/models/meal.dart';
 import 'package:flutter_course_meal_app/widgets/filters_screen.dart';
 import 'package:flutter_course_meal_app/widgets/tabs_screen.dart';
 
@@ -10,10 +13,33 @@ void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  List<Filter> _filters = [
+    Filter(title: 'Gluten-free', subTitle: 'Only include gluten free meals'),
+    Filter(title: 'Lactose-free', subTitle: 'Only include lactose free meals'),
+    Filter(title: 'Vegan', subTitle: 'Only include vegan meals'),
+    Filter(title: 'Vegetarian', subTitle: 'Only include vegetarian meals'),
+  ];
+
+  List<Meal> _selectedMeals = DUMMY_MEALS;
+
+  void _applyFilters() {
+    _selectedMeals = DUMMY_MEALS.where((element) {
+      if (_filters[mealFilters.gluten.index].filterState && !element.isGlutenFree) return false;
+      if (_filters[mealFilters.lactose.index].filterState && !element.isLactoseFree) return false;
+      if (_filters[mealFilters.vegan.index].filterState && !element.isVegan) return false;
+      if (_filters[mealFilters.vegetarian.index].filterState && !element.isVegetarian) return false;
+      return true;
+    }).toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = ThemeData(
@@ -41,9 +67,9 @@ class MyApp extends StatelessWidget {
       home: const TabsScreen(),
       routes: {
         // '/': (context) => const TabsScreen(),
-        CategoryMealsScreen.routeName: (context) => const CategoryMealsScreen(),
-        MealDetailScreen.routeName: (context) => const MealDetailScreen(),
-        FiltersScreen.routeName: (context) => const FiltersScreen(),
+        CategoryMealsScreen.routeName: (context) => CategoryMealsScreen(_selectedMeals),
+        MealDetailScreen.routeName: (context) => MealDetailScreen(_selectedMeals),
+        FiltersScreen.routeName: (context) => FiltersScreen(_filters, _applyFilters),
       },
     );
   }
