@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_course_meal_app/models/meal.dart';
 
-import '../models/dummy_data.dart';
+// import '../models/dummy_data.dart';
 
 import '../widgets/meal_item.dart';
 
@@ -25,7 +25,7 @@ class CategoryMealsScreen extends StatelessWidget {
       return meal.categories.contains(categoryId);
     }).toList();
 
-    print('Længde: ${selectedMeals.length}');
+    // print('Længde: ${selectedMeals.length}');
 
     return Scaffold(
       appBar: AppBar(
