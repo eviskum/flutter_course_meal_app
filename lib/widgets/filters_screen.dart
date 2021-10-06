@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_course_meal_app/models/dummy_data.dart';
+// import 'package:flutter_course_meal_app/models/dummy_data.dart';
 import 'package:flutter_course_meal_app/models/filter.dart';
-import 'package:flutter_course_meal_app/models/meal.dart';
+// import 'package:flutter_course_meal_app/models/meal.dart';
 import 'package:flutter_course_meal_app/widgets/main_drawer.dart';
 
 class FiltersScreen extends StatefulWidget {
   static const routeName = '/filters-screen';
 
-  List<Filter> filters;
-  Function applyFilters;
+  final List<Filter> filters;
+  final Function applyFilters;
 
-  FiltersScreen(this.filters, this.applyFilters, {Key? key}) : super(key: key);
+  const FiltersScreen(this.filters, this.applyFilters, {Key? key}) : super(key: key);
 
   @override
   State<FiltersScreen> createState() => _FiltersScreenState();

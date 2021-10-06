@@ -5,7 +5,7 @@ import 'package:flutter_course_meal_app/models/meal.dart';
 import 'package:flutter_course_meal_app/widgets/filters_screen.dart';
 import 'package:flutter_course_meal_app/widgets/tabs_screen.dart';
 
-import './widgets/categories_screen.dart';
+// import './widgets/categories_screen.dart';
 import './widgets/category_meals_screen.dart';
 import './widgets/meal_detail_screen.dart';
 
@@ -21,7 +21,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  List<Filter> _filters = [
+  final List<Filter> _filters = [
     Filter(title: 'Gluten-free', subTitle: 'Only include gluten free meals'),
     Filter(title: 'Lactose-free', subTitle: 'Only include lactose free meals'),
     Filter(title: 'Vegan', subTitle: 'Only include vegan meals'),
@@ -29,6 +29,7 @@ class _MyAppState extends State<MyApp> {
   ];
 
   List<Meal> _selectedMeals = DUMMY_MEALS;
+  final List<Meal> _favoriteMeals = [];
 
   void _applyFilters() {
     _selectedMeals = DUMMY_MEALS.where((element) {
@@ -38,6 +39,23 @@ class _MyAppState extends State<MyApp> {
       if (_filters[mealFilters.vegetarian.index].filterState && !element.isVegetarian) return false;
       return true;
     }).toList();
+  }
+
+  void _toggleFavorite(String id) {
+    final existingIdx = _favoriteMeals.indexWhere((element) => element.id == id);
+    if (existingIdx >= 0) {
+      setState(() {
+        _favoriteMeals.removeAt(existingIdx);
+      });
+    } else {
+      setState(() {
+        _favoriteMeals.add(DUMMY_MEALS.firstWhere((element) => element.id == id));
+      });
+    }
+  }
+
+  bool _isFavoriteMeals(String id) {
+    return _favoriteMeals.any((element) => element.id == id);
   }
 
   @override
@@ -64,11 +82,11 @@ class _MyAppState extends State<MyApp> {
       title: 'DeliMeals',
       theme: theme.copyWith(colorScheme: theme.colorScheme.copyWith(secondary: Colors.amber)),
       // home: const CategoriesScreen(),
-      home: const TabsScreen(),
+      home: TabsScreen(_favoriteMeals),
       routes: {
         // '/': (context) => const TabsScreen(),
         CategoryMealsScreen.routeName: (context) => CategoryMealsScreen(_selectedMeals),
-        MealDetailScreen.routeName: (context) => MealDetailScreen(_selectedMeals),
+        MealDetailScreen.routeName: (context) => MealDetailScreen(_selectedMeals, _toggleFavorite, _isFavoriteMeals),
         FiltersScreen.routeName: (context) => FiltersScreen(_filters, _applyFilters),
       },
     );
